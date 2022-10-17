@@ -27,7 +27,6 @@ resource discord_server nlp {
 resource discord_category_channel resources {
   name      = "Resources"
   server_id = discord_server.nlp.id
-  position  = 0
 }
 
 # only Staff+ are allowed to write in resources
@@ -47,7 +46,6 @@ resource discord_text_channel welcome {
   name                     = "welcome"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.resources.id
-  position                 = 0
   sync_perms_with_category = true
 }
 
@@ -55,7 +53,7 @@ resource discord_text_channel welcome {
 resource discord_category_channel character_creation {
   name      = "Character Creation"
   server_id = discord_server.nlp.id
-  position  = 1
+  position  = discord_category_channel.resources.position + 1
 }
 
 module "char_creation_permissions" {
@@ -74,7 +72,40 @@ resource discord_text_channel character_creation {
   name                     = "character-creation"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.character_creation.id
-  position                 = 0
+  sync_perms_with_category = true
+}
+
+# ---- STAFF ----
+resource discord_category_channel staff {
+  name      = "Staff"
+  server_id = discord_server.nlp.id
+  position  = discord_category_channel.character_creation.position + 1
+}
+
+module "staff_permissions" {
+  # only Staff+ are allowed to see staff channels
+  source      = "./limited_channel_permissions"
+  server_id   = discord_server.nlp.id
+  channel_id  = discord_category_channel.staff.id
+  permissions = local.permissions.view_channel
+  allow_roles = [
+    discord_role.staff.id,
+    discord_role.admin.id
+  ]
+}
+
+resource discord_text_channel staff_general {
+  name                     = "staff-general"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.staff.id
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel staff_bot {
+  name                     = "staff-bot"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.staff.id
+  position                 = discord_text_channel.staff_general.position + 1
   sync_perms_with_category = true
 }
 
@@ -83,14 +114,13 @@ resource discord_text_channel character_creation {
 resource discord_category_channel ooc {
   name      = "Out of Character"
   server_id = discord_server.nlp.id
-  position  = 2
+  position  = discord_category_channel.staff.position + 1
 }
 
 resource discord_text_channel general {
   name                     = "general"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
-  position                 = 0
   sync_perms_with_category = true
 }
 
@@ -98,7 +128,7 @@ resource discord_text_channel bot_test {
   name                     = "bot-test"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
-  position                 = 1
+  position                 = discord_text_channel.general.position + 1
   sync_perms_with_category = true
 }
 
@@ -107,7 +137,7 @@ resource discord_text_channel bot_test {
 resource discord_category_channel city {
   name      = "City of Lights"
   server_id = discord_server.nlp.id
-  position  = 3
+  position  = discord_category_channel.ooc.position + 1
 }
 
 module "city_of_lights_permissions" {
@@ -123,7 +153,6 @@ resource discord_text_channel gates {
   name                     = "city-gates"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
-  position                 = 0
   sync_perms_with_category = true
 }
 
@@ -131,6 +160,6 @@ resource discord_text_channel tavern {
   name                     = "the-borealis"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
-  position                 = 1
+  position                 = discord_text_channel.gates.position + 1
   sync_perms_with_category = true
 }
