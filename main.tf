@@ -37,6 +37,7 @@ module "resources_permissions" {
   permissions = local.permissions.resource_channel
   allow_roles = [
     discord_role.staff.id,
+    discord_role.founder.id,
     discord_role.admin.id
   ]
   additional_allow = local.permissions.view_channel # but everyone is allowed to see resources
@@ -64,6 +65,7 @@ module "char_creation_permissions" {
   permissions = local.permissions.resource_channel
   allow_roles = [
     discord_role.staff.id,
+    discord_role.founder.id,
     discord_role.admin.id
   ]
 }
@@ -90,6 +92,7 @@ module "staff_permissions" {
   permissions = local.permissions.view_channel
   allow_roles = [
     discord_role.staff.id,
+    discord_role.founder.id,
     discord_role.admin.id
   ]
 }

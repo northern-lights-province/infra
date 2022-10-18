@@ -40,6 +40,25 @@ data discord_permission staff {
   allow_extends = data.discord_permission.member.allow_bits
 }
 
+data discord_permission founder {
+  allow_extends = data.discord_permission.staff.allow_bits
+
+  manage_channels     = "allow"
+  manage_guild        = "allow"
+  view_audit_log      = "allow"
+  manage_messages     = "allow"
+  view_guild_insights = "allow"
+  mute_members        = "allow"
+  deafen_members      = "allow"
+  move_members        = "allow"
+  manage_nicknames    = "allow"
+  manage_webhooks     = "allow"
+  manage_emojis       = "allow"
+  manage_events       = "allow"
+  manage_threads      = "allow"
+  moderate_members    = "allow"
+}
+
 data discord_permission admin {
   administrator = "allow"
 }
