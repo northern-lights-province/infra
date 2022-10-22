@@ -78,7 +78,7 @@ resource discord_category_channel staff {
 }
 
 module "staff_permissions" {
-  # only Staff+ are allowed to see staff channels
+  # only Staff+ and bots are allowed to see staff channels
   source      = "./limited_channel_permissions"
   server_id   = discord_server.nlp.id
   channel_id  = discord_category_channel.staff.id
@@ -86,7 +86,8 @@ module "staff_permissions" {
   allow_roles = [
     discord_role.staff.id,
     discord_role.founder.id,
-    discord_role.admin.id
+    discord_role.admin.id,
+    discord_role.bots.id
   ]
 }
 
@@ -128,6 +129,14 @@ resource discord_text_channel bot_test {
   sync_perms_with_category = true
 }
 
+resource discord_text_channel quotes {
+  name                     = "quotes"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  position                 = discord_text_channel.bot_test.position + 1
+  sync_perms_with_category = true
+}
+
 # ---- IC ----
 # ### CITY OF LIGHTS ###
 resource discord_category_channel city {
@@ -161,7 +170,7 @@ resource discord_text_channel tavern {
 }
 
 resource discord_text_channel docks {
-  name                     = "docks"
+  name                     = "the-moorings"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
   position                 = discord_text_channel.tavern.position + 1

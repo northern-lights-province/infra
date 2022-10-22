@@ -63,11 +63,6 @@ data discord_permission admin {
   administrator = "allow"
 }
 
-# ==== imported/managed permissions ====
-data discord_permission avrae {
-  allow_extends = 388160
-}
-
 # ==== granular permissions ====
 data discord_permission send_messages {
   send_messages = "allow"
