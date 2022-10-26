@@ -50,8 +50,8 @@ resource discord_category_channel resources {
   server_id = discord_server.nlp.id
 }
 
-module "char_creation_permissions" {
-  # only Staff+ are allowed to write in char creations
+module "resources_permissions" {
+  # only Staff+ are allowed to write in resources
   source      = "./limited_channel_permissions"
   server_id   = discord_server.nlp.id
   channel_id  = discord_category_channel.resources.id
@@ -68,6 +68,30 @@ resource discord_text_channel character_creation {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.resources.id
   sync_perms_with_category = true
+}
+
+resource discord_text_channel getting_started {
+  name                     = "getting-started"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.resources.id
+  sync_perms_with_category = true
+  position                 = discord_text_channel.character_creation.position + 1
+}
+
+resource discord_text_channel rules_in_wild {
+  name                     = "wilderness-rules"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.resources.id
+  sync_perms_with_category = true
+  position                 = discord_text_channel.getting_started.position + 1
+}
+
+resource discord_text_channel rules_in_town {
+  name                     = "downtime-rules"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.resources.id
+  sync_perms_with_category = true
+  position                 = discord_text_channel.rules_in_wild.position + 1
 }
 
 # ---- STAFF ----
@@ -232,11 +256,19 @@ resource discord_text_channel coast_ooc {
   sync_perms_with_category = true
 }
 
-resource discord_text_channel cliffs {
-  name                     = "the-cliffs"
+resource discord_text_channel colorful_beach {
+  name                     = "colorful-sand-beach"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.coast.id
   position                 = discord_text_channel.coast_ooc.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel cliffs {
+  name                     = "basalt-cliffs"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.coast.id
+  position                 = discord_text_channel.colorful_beach.position + 1
   sync_perms_with_category = true
 }
 
@@ -272,16 +304,48 @@ resource discord_text_channel bforest_ooc {
   sync_perms_with_category = true
 }
 
-resource discord_text_channel cold_jungle_bottom {
-  name                     = "cold-jungle-floor"
+resource discord_text_channel autumnal_forest {
+  name                     = "autumnal-forest"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.bforest.id
   position                 = discord_text_channel.bforest_ooc.position + 1
   sync_perms_with_category = true
 }
 
+resource discord_text_channel frozen_river {
+  name                     = "frozen-river"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bforest.id
+  position                 = discord_text_channel.autumnal_forest.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel snowy_hill {
+  name                     = "snowy-hill"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bforest.id
+  position                 = discord_text_channel.frozen_river.position + 1
+  sync_perms_with_category = true
+}
+
 resource discord_text_channel cold_jungle_top {
   name                     = "cold-jungle-canopy"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bforest.id
+  position                 = discord_text_channel.snowy_hill.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel cold_jungle_bottom {
+  name                     = "cold-jungle-floor"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bforest.id
+  position                 = discord_text_channel.cold_jungle_top.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel mountain_pass {
+  name                     = "mountain-pass"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.bforest.id
   position                 = discord_text_channel.cold_jungle_bottom.position + 1
