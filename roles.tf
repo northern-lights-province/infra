@@ -22,12 +22,18 @@ resource discord_role booster {
   position  = discord_role.unmanaged_roles.position + 1
 }
 
+resource discord_role dragonspeaker {
+  server_id = discord_server.nlp.id
+  name      = "Dragonspeaker"
+  position  = discord_role.booster.position + 1
+}
+
 resource discord_role member {
   server_id   = discord_server.nlp.id
   name        = "Member"
   hoist       = true
   permissions = data.discord_permission.member.allow_bits
-  position    = discord_role.booster.position + 1
+  position    = discord_role.dragonspeaker.position + 1
 }
 
 resource discord_role player {

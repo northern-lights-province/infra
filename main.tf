@@ -130,6 +130,21 @@ resource discord_text_channel staff_bot {
   sync_perms_with_category = true
 }
 
+resource discord_text_channel staff_voice_text {
+  name                     = "staff-voice-text"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.staff.id
+  position                 = discord_text_channel.staff_bot.position + 1
+  sync_perms_with_category = true
+}
+
+# BUG: https://github.com/Lucky3028/terraform-provider-discord/issues/47
+#resource discord_voice_channel staff_voice {
+#  name                     = "staff-nyah-chat"
+#  server_id                = discord_server.nlp.id
+#  category                 = discord_category_channel.staff.id
+#  sync_perms_with_category = true
+#}
 
 # ---- OOC ----
 resource discord_category_channel ooc {
@@ -257,7 +272,7 @@ resource discord_text_channel coast_ooc {
 }
 
 resource discord_text_channel colorful_beach {
-  name                     = "colorful-sand-beach"
+  name                     = "heartbreak-beach"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.coast.id
   position                 = discord_text_channel.coast_ooc.position + 1
