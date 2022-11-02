@@ -9,10 +9,7 @@ resource discord_role_everyone everyone {
 resource discord_role unmanaged_roles {
   server_id = discord_server.nlp.id
   name      = "=== unmanaged roles below ==="
-
-  lifecycle {
-    ignore_changes = [position]
-  }
+  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_role booster {

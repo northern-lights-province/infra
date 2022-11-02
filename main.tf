@@ -2,7 +2,7 @@ terraform {
   required_providers {
     discord = {
       source  = "Lucky3028/discord"
-      version = ">=1.1.0"
+      version = ">=1.1.2"
     }
   }
 }
@@ -28,6 +28,7 @@ resource discord_text_channel welcome {
   name                     = "welcome"
   server_id                = discord_server.nlp.id
   sync_perms_with_category = false
+  lifecycle { ignore_changes = [position] }
 }
 
 # only Staff+ are allowed to write in welcome
@@ -48,6 +49,7 @@ module "welcome_permissions" {
 resource discord_category_channel resources {
   name      = "Resources"
   server_id = discord_server.nlp.id
+  lifecycle { ignore_changes = [position] }
 }
 
 module "resources_permissions" {
@@ -68,6 +70,7 @@ resource discord_text_channel character_creation {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.resources.id
   sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_text_channel getting_started {
@@ -120,6 +123,7 @@ resource discord_text_channel staff_general {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.staff.id
   sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_text_channel staff_bot {
@@ -138,13 +142,11 @@ resource discord_text_channel staff_voice_text {
   sync_perms_with_category = true
 }
 
-# BUG: https://github.com/Lucky3028/terraform-provider-discord/issues/47
-#resource discord_voice_channel staff_voice {
-#  name                     = "staff-nyah-chat"
-#  server_id                = discord_server.nlp.id
-#  category                 = discord_category_channel.staff.id
-#  sync_perms_with_category = true
-#}
+resource discord_voice_channel staff_voice {
+  name                     = "staff-nyah-chat"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.staff.id
+}
 
 # ---- OOC ----
 resource discord_category_channel ooc {
@@ -158,6 +160,7 @@ resource discord_text_channel general {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
   sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_text_channel bot_test {
@@ -198,6 +201,7 @@ resource discord_text_channel city_ooc {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
   sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_text_channel tavern {
@@ -269,6 +273,7 @@ resource discord_text_channel coast_ooc {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.coast.id
   sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_text_channel colorful_beach {
@@ -317,6 +322,7 @@ resource discord_text_channel bforest_ooc {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.bforest.id
   sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_text_channel autumnal_forest {

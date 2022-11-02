@@ -53,6 +53,7 @@ data discord_permission founder {
   move_members        = "allow"
   manage_nicknames    = "allow"
   manage_webhooks     = "allow"
+  manage_roles        = "allow"
   manage_emojis       = "allow"
   manage_events       = "allow"
   manage_threads      = "allow"
