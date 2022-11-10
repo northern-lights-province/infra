@@ -79,7 +79,6 @@ data discord_permission resource_channel {
   add_reactions          = "allow"
   send_thread_messages   = "allow"
   create_public_threads  = "allow"
-  create_private_threads = "allow"
 }
 
 locals {
