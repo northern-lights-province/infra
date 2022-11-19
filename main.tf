@@ -143,9 +143,9 @@ resource discord_text_channel staff_voice_text {
 }
 
 resource discord_voice_channel staff_voice {
-  name                     = "staff-nyah-chat"
-  server_id                = discord_server.nlp.id
-  category                 = discord_category_channel.staff.id
+  name      = "staff-nyah-chat"
+  server_id = discord_server.nlp.id
+  category  = discord_category_channel.staff.id
 }
 
 # ---- OOC ----
@@ -163,11 +163,19 @@ resource discord_text_channel general {
   lifecycle { ignore_changes = [position] }
 }
 
+resource discord_text_channel memes {
+  name                     = "memes"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  position                 = discord_text_channel.general.position + 1
+  sync_perms_with_category = true
+}
+
 resource discord_text_channel bot_test {
   name                     = "bot-test"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
-  position                 = discord_text_channel.general.position + 1
+  position                 = discord_text_channel.memes.position + 1
   sync_perms_with_category = true
 }
 
@@ -245,7 +253,7 @@ resource discord_text_channel beach {
 }
 
 resource discord_text_channel gates {
-  name                     = "city-gates"
+  name                     = "the-caravansary"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
   position                 = discord_text_channel.beach.position + 1
@@ -276,11 +284,19 @@ resource discord_text_channel coast_ooc {
   lifecycle { ignore_changes = [position] }
 }
 
+resource discord_text_channel tide_pools {
+  name                     = "tide-pools"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.coast.id
+  position                 = discord_text_channel.coast_ooc.position + 1
+  sync_perms_with_category = true
+}
+
 resource discord_text_channel colorful_beach {
   name                     = "heartbreak-beach"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.coast.id
-  position                 = discord_text_channel.coast_ooc.position + 1
+  position                 = discord_text_channel.tide_pools.position + 1
   sync_perms_with_category = true
 }
 
@@ -289,15 +305,6 @@ resource discord_text_channel cliffs {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.coast.id
   position                 = discord_text_channel.colorful_beach.position + 1
-  sync_perms_with_category = true
-}
-
-
-resource discord_text_channel tide_pools {
-  name                     = "tide-pools"
-  server_id                = discord_server.nlp.id
-  category                 = discord_category_channel.coast.id
-  position                 = discord_text_channel.cliffs.position + 1
   sync_perms_with_category = true
 }
 
