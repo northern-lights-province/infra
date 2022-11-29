@@ -90,7 +90,7 @@ resource discord_text_channel rules_in_wild {
 }
 
 resource discord_text_channel rules_in_town {
-  name                     = "downtime-rules"
+  name                     = "city-and-downtime-rules"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.resources.id
   sync_perms_with_category = true
@@ -134,11 +134,21 @@ resource discord_text_channel staff_bot {
   sync_perms_with_category = true
 }
 
+resource discord_text_channel staff_logs {
+  name                     = "staff-logs"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.staff.id
+  position                 = discord_text_channel.staff_bot.position + 1
+  sync_perms_with_category = true
+}
+
+# staff-forum lives here but can't be modeled in terraform
+
 resource discord_text_channel staff_voice_text {
   name                     = "staff-voice-text"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.staff.id
-  position                 = discord_text_channel.staff_bot.position + 1
+  lifecycle { ignore_changes = [position] }
   sync_perms_with_category = true
 }
 
@@ -148,11 +158,66 @@ resource discord_voice_channel staff_voice {
   category  = discord_category_channel.staff.id
 }
 
+# ---- BOT STUFF ----
+resource discord_category_channel bot_stuff {
+  name      = "Bot Stuff"
+  server_id = discord_server.nlp.id
+  position  = discord_category_channel.staff.position + 1
+}
+
+module "bot_stuff_permissions" {
+  # only Players are allowed to write in bot channels
+  # also gaius isn't allowed in here (SET MANUALLY)
+  source      = "./limited_channel_permissions"
+  server_id   = discord_server.nlp.id
+  channel_id  = discord_category_channel.bot_stuff.id
+  permissions = local.permissions.send_messages
+  allow_roles = [discord_role.player.id]
+}
+
+resource discord_text_channel bot_test {
+  name                     = "bot-test"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bot_stuff.id
+  sync_perms_with_category = false
+  lifecycle { ignore_changes = [position] }
+}
+
+resource discord_channel_permission bot_test_allow_everyone_send {
+  # but everyone is allowed to write in bot-test
+  channel_id   = discord_text_channel.bot_test.id
+  type         = "role"
+  overwrite_id = discord_role_everyone.everyone.id
+  allow        = local.permissions.send_messages
+}
+
+resource discord_text_channel level_ups {
+  name                     = "level-ups"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bot_stuff.id
+  position                 = discord_text_channel.bot_test.position + 1
+  sync_perms_with_category = false
+}
+
+module "levelups_permissions" {
+  # only Staff+ and bots are allowed to post in level-ups
+  source      = "./limited_channel_permissions"
+  server_id   = discord_server.nlp.id
+  channel_id  = discord_text_channel.level_ups.id
+  permissions = local.permissions.send_messages
+  allow_roles = [
+    discord_role.staff.id,
+    discord_role.bots.id
+  ]
+}
+
+# market-bazaar lives here but can't be modeled in terraform
+
 # ---- OOC ----
 resource discord_category_channel ooc {
   name      = "Out of Character"
   server_id = discord_server.nlp.id
-  position  = discord_category_channel.staff.position + 1
+  position  = discord_category_channel.bot_stuff.position + 1
 }
 
 resource discord_text_channel general {
@@ -163,16 +228,24 @@ resource discord_text_channel general {
   lifecycle { ignore_changes = [position] }
 }
 
-resource discord_text_channel memes {
-  name                     = "memes"
+resource discord_text_channel questions {
+  name                     = "help-and-questions"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
   position                 = discord_text_channel.general.position + 1
   sync_perms_with_category = true
 }
 
-resource discord_text_channel bot_test {
-  name                     = "bot-test"
+resource discord_text_channel memes {
+  name                     = "memes"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  position                 = discord_text_channel.questions.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel lfg {
+  name                     = "looking-for-group"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
   position                 = discord_text_channel.memes.position + 1
@@ -183,7 +256,7 @@ resource discord_text_channel quotes {
   name                     = "quotes"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
-  position                 = discord_text_channel.bot_test.position + 1
+  position                 = discord_text_channel.lfg.position + 1
   sync_perms_with_category = true
 }
 
