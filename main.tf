@@ -158,11 +158,49 @@ resource discord_voice_channel staff_voice {
   category  = discord_category_channel.staff.id
 }
 
+# ---- DMs ----
+resource discord_category_channel dms {
+  name      = "Dungeon Masters"
+  server_id = discord_server.nlp.id
+  position  = discord_category_channel.staff.position + 1
+}
+
+module "dm_permissions" {
+  # only DM+ and bots are allowed to see DM channels
+  source      = "./limited_channel_permissions"
+  server_id   = discord_server.nlp.id
+  channel_id  = discord_category_channel.dms.id
+  permissions = local.permissions.view_channel
+  allow_roles = [
+    discord_role.dm.id,
+    discord_role.staff.id,
+    discord_role.bots.id
+  ]
+}
+
+resource discord_text_channel dm_general {
+  name                     = "dm-general"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.dms.id
+  sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
+}
+
+resource discord_text_channel dm_bot {
+  name                     = "dm-bot"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.dms.id
+  position                 = discord_text_channel.dm_general.position + 1
+  sync_perms_with_category = true
+}
+
+# dm-forum lives here but can't be modeled in terraform
+
 # ---- BOT STUFF ----
 resource discord_category_channel bot_stuff {
   name      = "Bot Stuff"
   server_id = discord_server.nlp.id
-  position  = discord_category_channel.staff.position + 1
+  position  = discord_category_channel.dms.position + 1
 }
 
 module "bot_stuff_permissions" {
@@ -450,5 +488,55 @@ resource discord_text_channel mountain_pass {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.bforest.id
   position                 = discord_text_channel.cold_jungle_bottom.position + 1
+  sync_perms_with_category = true
+}
+
+# ---- QUESTS ----
+resource discord_category_channel quests {
+  name      = "Quest Rooms"
+  server_id = discord_server.nlp.id
+  position  = discord_category_channel.bforest.position + 1
+}
+
+module "quest_permissions" {
+  # only Players are allowed to write in IC chats
+  source      = "./limited_channel_permissions"
+  server_id   = discord_server.nlp.id
+  channel_id  = discord_category_channel.quests.id
+  permissions = local.permissions.send_messages
+  allow_roles = [discord_role.player.id]
+}
+
+resource discord_text_channel quest_board {
+  name                     = "quest-board"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.quests.id
+  sync_perms_with_category = true
+  lifecycle { ignore_changes = [position] }
+}
+
+resource discord_text_channel quest_planning {
+  name                     = "quest-planning"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.quests.id
+  position                 = discord_text_channel.quest_board.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel quest_ooc {
+  count                    = 3  # change this to control number of quest rooms
+  name                     = "quest-${count.index + 1}-ooc"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.quests.id
+  position                 = discord_text_channel.quest_planning.position + (count.index * 2) + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel quest_ic {
+  count                    = length(discord_text_channel.quest_ooc)
+  name                     = "quest-${count.index + 1}"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.quests.id
+  position                 = discord_text_channel.quest_ooc[count.index].position + 1
   sync_perms_with_category = true
 }
