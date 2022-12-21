@@ -213,12 +213,20 @@ module "bot_stuff_permissions" {
   allow_roles = [discord_role.player.id]
 }
 
+resource discord_text_channel submit_characters {
+  name                     = "submit-characters"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bot_stuff.id
+  sync_perms_with_category = false  # Gaius is allowed in here
+  lifecycle { ignore_changes = [position] }
+}
+
 resource discord_text_channel bot_test {
   name                     = "bot-test"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.bot_stuff.id
+  position                 = discord_text_channel.submit_characters.position + 1
   sync_perms_with_category = false
-  lifecycle { ignore_changes = [position] }
 }
 
 resource discord_channel_permission bot_test_allow_everyone_send {
@@ -234,7 +242,7 @@ resource discord_text_channel level_ups {
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.bot_stuff.id
   position                 = discord_text_channel.bot_test.position + 1
-  sync_perms_with_category = false
+  sync_perms_with_category = false  # Gaius is allowed in here
 }
 
 module "levelups_permissions" {
@@ -247,6 +255,13 @@ module "levelups_permissions" {
     discord_role.staff.id,
     discord_role.bots.id
   ]
+}
+
+resource discord_text_channel community_goals {
+  name                     = "community-goals"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.bot_stuff.id
+  position                 = discord_text_channel.level_ups.position + 1
 }
 
 # market-bazaar lives here but can't be modeled in terraform

@@ -32,6 +32,10 @@ data discord_permission player {
   allow_extends = data.discord_permission.member.allow_bits
 }
 
+data discord_permission bots {
+  allow_extends = data.discord_permission.founder.allow_bits
+}
+
 data discord_permission dm {
   allow_extends = data.discord_permission.member.allow_bits
 }
