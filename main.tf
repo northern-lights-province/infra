@@ -198,7 +198,7 @@ resource discord_text_channel dm_bot {
 
 # ---- BOT STUFF ----
 resource discord_category_channel bot_stuff {
-  name      = "Bot Stuff"
+  name      = "Meta"
   server_id = discord_server.nlp.id
   position  = discord_category_channel.dms.position + 1
 }
@@ -258,10 +258,18 @@ module "levelups_permissions" {
 }
 
 resource discord_text_channel community_goals {
-  name                     = "community-goals"
-  server_id                = discord_server.nlp.id
-  category                 = discord_category_channel.bot_stuff.id
-  position                 = discord_text_channel.level_ups.position + 1
+  name      = "community-goals"
+  topic     = "Contribute to community goals here with !cg <id> <amount>! Messages will automatically be deleted after 1 minute."
+  server_id = discord_server.nlp.id
+  category  = discord_category_channel.bot_stuff.id
+  position  = discord_text_channel.level_ups.position + 1
+}
+
+resource discord_text_channel downtime_rolls {
+  name      = "downtime-rolls"
+  server_id = discord_server.nlp.id
+  category  = discord_category_channel.bot_stuff.id
+  position  = discord_text_channel.community_goals.position + 1
 }
 
 # market-bazaar lives here but can't be modeled in terraform
@@ -362,11 +370,19 @@ resource discord_text_channel market {
   sync_perms_with_category = true
 }
 
+resource discord_text_channel shrine {
+  name                     = "shrine"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.city.id
+  position                 = discord_text_channel.market.position + 1
+  sync_perms_with_category = true
+}
+
 resource discord_text_channel park {
   name                     = "park"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
-  position                 = discord_text_channel.market.position + 1
+  position                 = discord_text_channel.shrine.position + 1
   sync_perms_with_category = true
 }
 
