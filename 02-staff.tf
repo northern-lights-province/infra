@@ -19,12 +19,21 @@ module "staff_permissions" {
   ]
 }
 
-resource discord_text_channel staff_general {
-  name                     = "staff-general"
+# ==== channels ====
+resource discord_text_channel staff_resources {
+  name                     = "staff-resources"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.staff.id
   sync_perms_with_category = true
   lifecycle { ignore_changes = [position] }
+}
+
+resource discord_text_channel staff_general {
+  name                     = "staff-general"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.staff.id
+  position                 = discord_text_channel.staff_resources.position + 1
+  sync_perms_with_category = true
 }
 
 resource discord_text_channel staff_bot {

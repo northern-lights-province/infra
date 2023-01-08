@@ -108,7 +108,7 @@ resource discord_role staff {
 
 resource discord_role founder {
   server_id   = discord_server.nlp.id
-  name        = "Founder"
+  name        = "Admin"
   permissions = data.discord_permission.founder.allow_bits
   position    = discord_role.staff.position + 1
 }

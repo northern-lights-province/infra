@@ -42,13 +42,7 @@ data discord_permission dm {
 
 data discord_permission staff {
   allow_extends = data.discord_permission.member.allow_bits
-}
 
-data discord_permission founder {
-  allow_extends = data.discord_permission.staff.allow_bits
-
-  manage_channels     = "allow"
-  manage_guild        = "allow"
   view_audit_log      = "allow"
   manage_messages     = "allow"
   view_guild_insights = "allow"
@@ -57,11 +51,18 @@ data discord_permission founder {
   move_members        = "allow"
   manage_nicknames    = "allow"
   manage_webhooks     = "allow"
-  manage_roles        = "allow"
   manage_emojis       = "allow"
   manage_events       = "allow"
   manage_threads      = "allow"
   moderate_members    = "allow"
+}
+
+data discord_permission founder {
+  allow_extends = data.discord_permission.staff.allow_bits
+
+  manage_guild    = "allow"
+  manage_channels = "allow"
+  manage_roles    = "allow"
 }
 
 data discord_permission admin {
@@ -79,10 +80,10 @@ data discord_permission view_channel {
 
 # permissions to deny to everyone for resource channels
 data discord_permission resource_channel {
-  send_messages          = "allow"
-  add_reactions          = "allow"
-  send_thread_messages   = "allow"
-  create_public_threads  = "allow"
+  send_messages         = "allow"
+  add_reactions         = "allow"
+  send_thread_messages  = "allow"
+  create_public_threads = "allow"
 }
 
 locals {
