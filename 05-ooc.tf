@@ -21,11 +21,35 @@ resource discord_text_channel questions {
   sync_perms_with_category = true
 }
 
+resource discord_text_channel science {
+  name                     = "science"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  position                 = discord_text_channel.questions.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel art {
+  name                     = "art"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  position                 = discord_text_channel.science.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel pets {
+  name                     = "pets"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  position                 = discord_text_channel.art.position + 1
+  sync_perms_with_category = true
+}
+
 resource discord_text_channel memes {
   name                     = "memes"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.ooc.id
-  position                 = discord_text_channel.questions.position + 1
+  position                 = discord_text_channel.pets.position + 1
   sync_perms_with_category = true
 }
 
