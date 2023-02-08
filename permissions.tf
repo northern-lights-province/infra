@@ -70,14 +70,6 @@ data discord_permission admin {
 }
 
 # ==== granular permissions ====
-data discord_permission send_messages {
-  send_messages = "allow"
-}
-
-data discord_permission view_channel {
-  view_channel = "allow"
-}
-
 # permissions to deny to everyone for resource channels
 data discord_permission resource_channel {
   send_messages         = "allow"
@@ -87,9 +79,11 @@ data discord_permission resource_channel {
 }
 
 locals {
+  // https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
   permissions = {
-    send_messages    = data.discord_permission.send_messages.allow_bits
-    view_channel     = data.discord_permission.view_channel.allow_bits
-    resource_channel = data.discord_permission.resource_channel.allow_bits
+    send_messages            = 2048
+    view_channel             = 1024
+    send_and_manage_messages = 10240
+    resource_channel         = data.discord_permission.resource_channel.allow_bits
   }
 }

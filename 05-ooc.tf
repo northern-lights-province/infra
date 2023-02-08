@@ -68,3 +68,18 @@ resource discord_text_channel quotes {
   position                 = discord_text_channel.lfg.position + 1
   sync_perms_with_category = true
 }
+
+resource discord_text_channel general_voice_text {
+  name                     = "voice-no-mic"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  position                 = discord_text_channel.quotes.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_voice_channel general_voice {
+  name                     = "General"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.ooc.id
+  sync_perms_with_category = true
+}

@@ -52,6 +52,14 @@ resource discord_text_channel staff_logs {
   sync_perms_with_category = true
 }
 
+resource discord_text_channel staff_logs_verbose {
+  name                     = "staff-logs-verbose"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.staff.id
+  position                 = discord_text_channel.staff_logs.position + 1
+  sync_perms_with_category = true
+}
+
 # staff-forum lives here but can't be modeled in terraform
 
 resource discord_text_channel staff_voice_text {

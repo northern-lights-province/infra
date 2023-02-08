@@ -45,37 +45,41 @@ resource discord_role player {
 }
 
 resource discord_role t1 {
-  server_id = discord_server.nlp.id
-  name      = "Tier 1"
-  hoist     = true
-  color     = 13166591  # 0xc8e7ff  # tiers: blue -> purple gradient
-  position  = discord_role.player.position + 1
+  server_id   = discord_server.nlp.id
+  name        = "Tier 1"
+  hoist       = true
+  mentionable = true
+  color       = 13166591  # 0xc8e7ff  # tiers: blue -> purple gradient
+  position    = discord_role.player.position + 1
 }
 
 resource discord_role t2 {
-  server_id = discord_server.nlp.id
-  name      = "Tier 2"
-  hoist     = true
-  color     = 13685247  # 0xd0d1ff
-  position  = discord_role.t1.position + 1
+  server_id   = discord_server.nlp.id
+  name        = "Tier 2"
+  hoist       = true
+  mentionable = true
+  color       = 13685247  # 0xd0d1ff
+  position    = discord_role.t1.position + 1
 }
 
 
 resource discord_role t3 {
-  server_id = discord_server.nlp.id
-  name      = "Tier 3"
-  hoist     = true
-  color     = 14203903  # 0xd8bbff
-  position  = discord_role.t2.position + 1
+  server_id   = discord_server.nlp.id
+  name        = "Tier 3"
+  hoist       = true
+  mentionable = true
+  color       = 14203903  # 0xd8bbff
+  position    = discord_role.t2.position + 1
 }
 
 
 resource discord_role t4 {
-  server_id = discord_server.nlp.id
-  name      = "Tier 4"
-  hoist     = true
-  color     = 14592767  # 0xdeaaff
-  position  = discord_role.t3.position + 1
+  server_id   = discord_server.nlp.id
+  name        = "Tier 4"
+  hoist       = true
+  mentionable = true
+  color       = 14592767  # 0xdeaaff
+  position    = discord_role.t3.position + 1
 }
 
 resource discord_role bots {

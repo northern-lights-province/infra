@@ -5,15 +5,29 @@ resource discord_category_channel quests {
   position  = discord_category_channel.bforest.position + 1
 }
 
-module "quest_permissions" {
-  # only Players are allowed to write in IC chats
-  source      = "./limited_channel_permissions"
-  server_id   = discord_server.nlp.id
-  channel_id  = discord_category_channel.quests.id
-  permissions = local.permissions.send_messages
-  allow_roles = [discord_role.player.id]
+# ==== PERMISSIONS ====
+resource discord_channel_permission quests_deny_everyone {
+  channel_id   = discord_category_channel.quests.id
+  type         = "role"
+  overwrite_id = discord_role_everyone.everyone.id
+  deny         = local.permissions.send_messages
 }
 
+resource discord_channel_permission quests_allow_players_send {
+  channel_id   = discord_category_channel.quests.id
+  type         = "role"
+  overwrite_id = discord_role.player.id
+  allow        = local.permissions.send_messages
+}
+
+resource discord_channel_permission quests_allow_dms_manage {
+  channel_id   = discord_category_channel.quests.id
+  type         = "role"
+  overwrite_id = discord_role.dm.id
+  allow        = local.permissions.send_and_manage_messages
+}
+
+# ==== CHANNELS ====
 resource discord_text_channel quest_board {
   name                     = "quest-board"
   server_id                = discord_server.nlp.id
