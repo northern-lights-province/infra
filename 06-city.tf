@@ -71,10 +71,12 @@ resource discord_text_channel beach {
   sync_perms_with_category = true
 }
 
+# city-houses lives here but can't be modeled
+
 resource discord_text_channel gates {
   name                     = "the-caravansary"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
-  position                 = discord_text_channel.beach.position + 1
+  position                 = discord_text_channel.beach.position + 2
   sync_perms_with_category = true
 }

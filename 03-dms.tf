@@ -18,12 +18,20 @@ module "dm_permissions" {
   ]
 }
 
-resource discord_text_channel dm_general {
-  name                     = "dm-general"
+resource discord_text_channel dm_resources {
+  name                     = "dm-resources"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.dms.id
   sync_perms_with_category = true
   lifecycle { ignore_changes = [position] }
+}
+
+resource discord_text_channel dm_general {
+  name                     = "dm-general"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.dms.id
+  position                 = discord_text_channel.dm_resources.position + 1
+  sync_perms_with_category = true
 }
 
 resource discord_text_channel dm_bot {
