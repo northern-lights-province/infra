@@ -43,3 +43,17 @@ resource discord_text_channel dm_bot {
 }
 
 # dm-forum lives here but can't be modeled in terraform
+
+resource discord_text_channel dm_voice_text {
+  name                     = "dm-voice-text"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.dms.id
+  position                 = discord_text_channel.dm_bot.position + 2
+  sync_perms_with_category = true
+}
+
+resource discord_voice_channel dm_voice {
+  name      = "dm-voice"
+  server_id = discord_server.nlp.id
+  category  = discord_category_channel.dms.id
+}

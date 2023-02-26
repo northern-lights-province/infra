@@ -23,6 +23,14 @@ resource discord_text_channel submit_characters {
   lifecycle { ignore_changes = [position] }
 }
 
+resource discord_channel_permission submit_characters_no_public_threads {
+  # no one is allowed to create public threads in submit-characters
+  channel_id   = discord_text_channel.submit_characters.id
+  type         = "role"
+  overwrite_id = discord_role_everyone.everyone.id
+  deny         = local.permissions.create_public_threads
+}
+
 resource discord_text_channel bot_test {
   name                     = "bot-test"
   server_id                = discord_server.nlp.id
@@ -75,3 +83,4 @@ resource discord_text_channel downtime_rolls {
 }
 
 # market-bazaar lives here but can't be modeled in terraform
+# the-wereguild lives here but can't be modeled in terraform

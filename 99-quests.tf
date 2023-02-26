@@ -2,7 +2,7 @@
 resource discord_category_channel quests {
   name      = "Quest Rooms"
   server_id = discord_server.nlp.id
-  position  = discord_category_channel.bforest.position + 1
+  position  = discord_category_channel.hubeast.position + 1
 }
 
 # ==== PERMISSIONS ====

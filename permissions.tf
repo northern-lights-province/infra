@@ -60,9 +60,10 @@ data discord_permission staff {
 data discord_permission founder {
   allow_extends = data.discord_permission.staff.allow_bits
 
-  manage_guild    = "allow"
-  manage_channels = "allow"
-  manage_roles    = "allow"
+  manage_guild     = "allow"
+  manage_channels  = "allow"
+  manage_roles     = "allow"
+  mention_everyone = "allow"
 }
 
 data discord_permission admin {
@@ -72,10 +73,11 @@ data discord_permission admin {
 # ==== granular permissions ====
 # permissions to deny to everyone for resource channels
 data discord_permission resource_channel {
-  send_messages         = "allow"
-  add_reactions         = "allow"
-  send_thread_messages  = "allow"
-  create_public_threads = "allow"
+  send_messages          = "allow"
+  add_reactions          = "allow"
+  send_thread_messages   = "allow"
+  create_public_threads  = "allow"
+  create_private_threads = "allow"
 }
 
 locals {
@@ -84,6 +86,7 @@ locals {
     send_messages            = 2048
     view_channel             = 1024
     send_and_manage_messages = 10240
+    create_public_threads    = 34359738368 # 0x800000000
     resource_channel         = data.discord_permission.resource_channel.allow_bits
   }
 }

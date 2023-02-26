@@ -61,11 +61,3 @@ resource discord_text_channel cold_jungle_bottom {
   position                 = discord_text_channel.cold_jungle_top.position + 1
   sync_perms_with_category = true
 }
-
-resource discord_text_channel mountain_pass {
-  name                     = "mountain-pass"
-  server_id                = discord_server.nlp.id
-  category                 = discord_category_channel.bforest.id
-  position                 = discord_text_channel.cold_jungle_bottom.position + 1
-  sync_perms_with_category = true
-}

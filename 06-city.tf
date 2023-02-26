@@ -73,10 +73,19 @@ resource discord_text_channel beach {
 
 # city-houses lives here but can't be modeled
 
+resource discord_text_channel wereguild_hall {
+  name                     = "wereguild-hall"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.city.id
+  position                 = discord_text_channel.beach.position + 2
+  sync_perms_with_category = true
+}
+
+
 resource discord_text_channel gates {
   name                     = "the-caravansary"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.city.id
-  position                 = discord_text_channel.beach.position + 2
+  position                 = discord_text_channel.wereguild_hall.position + 1
   sync_perms_with_category = true
 }
