@@ -45,3 +45,27 @@ resource discord_text_channel cliffs {
   position                 = discord_text_channel.colorful_beach.position + 1
   sync_perms_with_category = true
 }
+
+resource discord_text_channel coast_volcano_base {
+  name                     = "volcano-base"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.coast.id
+  position                 = discord_text_channel.cliffs.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel coast_volcano_peak {
+  name                     = "volcano-peak"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.coast.id
+  position                 = discord_text_channel.coast_volcano_base.position + 1
+  sync_perms_with_category = true
+}
+
+resource discord_text_channel coast_volcano_caldera {
+  name                     = "steamy-caldera"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.coast.id
+  position                 = discord_text_channel.coast_volcano_peak.position + 1
+  sync_perms_with_category = true
+}
