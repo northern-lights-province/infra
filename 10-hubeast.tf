@@ -21,11 +21,19 @@ resource discord_text_channel east_ooc {
   lifecycle { ignore_changes = [position] }
 }
 
+resource discord_text_channel verdant_outpost {
+  name                     = "verdant-outpost"
+  server_id                = discord_server.nlp.id
+  category                 = discord_category_channel.hubeast.id
+  position                 = discord_text_channel.east_ooc.position + 1
+  sync_perms_with_category = true
+}
+
 resource discord_text_channel verdant_hills {
   name                     = "verdant-hills"
   server_id                = discord_server.nlp.id
   category                 = discord_category_channel.hubeast.id
-  position                 = discord_text_channel.east_ooc.position + 1
+  position                 = discord_text_channel.verdant_outpost.position + 1
   sync_perms_with_category = true
 }
 

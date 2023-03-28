@@ -83,8 +83,9 @@ data discord_permission resource_channel {
 locals {
   // https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
   permissions = {
-    send_messages            = 2048
+    add_reactions            = 64
     view_channel             = 1024
+    send_messages            = 2048
     send_and_manage_messages = 10240
     create_public_threads    = 34359738368 # 0x800000000
     resource_channel         = data.discord_permission.resource_channel.allow_bits

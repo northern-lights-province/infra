@@ -80,7 +80,7 @@ module "announcements_permissions" {
   source      = "./limited_channel_permissions"
   server_id   = discord_server.nlp.id
   channel_id  = discord_news_channel.announcements.id
-  permissions = local.permissions.resource_channel
+  permissions = local.permissions.resource_channel - local.permissions.add_reactions
   allow_roles = [
     discord_role.staff.id,
     discord_role.founder.id,
