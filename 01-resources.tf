@@ -62,7 +62,7 @@ resource discord_text_channel house_rules {
 }
 
 # ---- PERMISSIONS ----
-# only Staff+ are allowed to write in welcome
+# only Staff are allowed to write in welcome
 module "welcome_permissions" {
   source      = "./limited_channel_permissions"
   server_id   = discord_server.nlp.id
@@ -70,8 +70,6 @@ module "welcome_permissions" {
   permissions = local.permissions.resource_channel
   allow_roles = [
     discord_role.staff.id,
-    discord_role.founder.id,
-    discord_role.admin.id
   ]
   additional_allow = local.permissions.view_channel # but everyone is allowed to see resources
 }
@@ -83,21 +81,17 @@ module "announcements_permissions" {
   permissions = local.permissions.resource_channel - local.permissions.add_reactions
   allow_roles = [
     discord_role.staff.id,
-    discord_role.founder.id,
-    discord_role.admin.id
   ]
   additional_allow = local.permissions.view_channel # but everyone is allowed to see resources
 }
 
 module "resources_permissions" {
-  # only Staff+ are allowed to write in resources
+  # only Staff are allowed to write in resources
   source      = "./limited_channel_permissions"
   server_id   = discord_server.nlp.id
   channel_id  = discord_category_channel.resources.id
   permissions = local.permissions.resource_channel
   allow_roles = [
     discord_role.staff.id,
-    discord_role.founder.id,
-    discord_role.admin.id
   ]
 }

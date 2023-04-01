@@ -13,7 +13,6 @@ module "staff_permissions" {
   permissions = local.permissions.view_channel
   allow_roles = [
     discord_role.staff.id,
-    discord_role.founder.id,
     discord_role.admin.id,
     discord_role.bots.id
   ]

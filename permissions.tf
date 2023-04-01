@@ -33,7 +33,8 @@ data discord_permission player {
 }
 
 data discord_permission bots {
-  allow_extends = data.discord_permission.founder.allow_bits
+  allow_extends = data.discord_permission.member.allow_bits
+  # any additional bot-specific permissions granted in the bot's individual role
 }
 
 data discord_permission dm {
@@ -55,15 +56,10 @@ data discord_permission staff {
   manage_events       = "allow"
   manage_threads      = "allow"
   moderate_members    = "allow"
-}
-
-data discord_permission founder {
-  allow_extends = data.discord_permission.staff.allow_bits
-
-  manage_guild     = "allow"
-  manage_channels  = "allow"
-  manage_roles     = "allow"
-  mention_everyone = "allow"
+  manage_roles        = "allow"
+  mention_everyone    = "allow"
+  kick_members        = "allow"
+  ban_members         = "allow"
 }
 
 data discord_permission admin {

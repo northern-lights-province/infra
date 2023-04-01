@@ -106,23 +106,16 @@ resource discord_role staff {
   position    = discord_role.dm.position + 1
 }
 
-resource discord_role founder {
-  server_id   = discord_server.nlp.id
-  name        = "Admin"
-  permissions = data.discord_permission.founder.allow_bits
-  position    = discord_role.staff.position + 1
-}
-
 resource discord_role admin {
   server_id   = discord_server.nlp.id
   name        = "Benevolent Dictator For Life"
   permissions = data.discord_permission.admin.allow_bits
-  position    = discord_role.founder.position + 1
+  position    = discord_role.staff.position + 1
 }
 
 resource discord_role infra_bot {
   server_id   = discord_server.nlp.id
   name        = "Northern Lights Bot"
   permissions = data.discord_permission.admin.allow_bits
-  position    = discord_role.admin.position + 1
+  lifecycle { ignore_changes = [position] }
 }
